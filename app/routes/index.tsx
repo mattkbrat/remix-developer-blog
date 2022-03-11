@@ -31,6 +31,9 @@ export default function Index() {
         <li>
           <Link to="/posts">Posts</Link>
         </li>
+        <li>
+          <Link to="/admin/new">New</Link>
+        </li>
       </ul>
     </div>
   );

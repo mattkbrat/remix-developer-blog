@@ -3,6 +3,15 @@ import fs from "fs/promises";
 import parseFrontMatter from "front-matter";
 import invariant from "tiny-invariant";
 import { marked } from "marked";
+import {json} from "remix";
+
+
+type NewPost = {
+    title: string;
+    slug: string;
+    markdown: string;
+};
+
 
 export type Post = {
     slug: string;
@@ -53,4 +62,13 @@ export async function getPost(slug: string) {
     );
     const html = marked(body);
     return { slug, html, title: attributes.title};
+}
+
+export async function createPost(post: NewPost){
+    const md = `---\ntitle: ${post.title}\n---\n\n${post.markdown}`;
+    await fs.writeFile(
+        path.join(postsPath, post.slug + ".md"),
+        md
+    );
+    return json(await getPost(post.slug))
 }
